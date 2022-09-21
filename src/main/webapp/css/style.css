@@ -1,0 +1,699 @@
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body{
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+.grid-container{
+  display: grid;
+  grid-template-areas:
+  'left right';
+}
+
+/* left */
+.left{
+  grid-area: left;
+  width: 6.17vw;
+  height: 100vh;
+  background-color: rgba(22, 85, 167, 0.9);
+}
+.menuBtn{
+  width: 6vw;
+  background-color:rgba(22, 85, 167, 1);
+  color: white;
+  font-family: '배달의민족 한나체 Air OTF';
+  border-radius: 3px;
+  border: 1px 2px 2px 2px;
+  border-color: aliceblue;
+  position: absolute;
+  text-align: center;
+  vertical-align : middle;
+  cursor: pointer;
+}
+.menuBtn:hover{
+  background-color: rgba(0, 60, 136,1);
+}
+#dbQry{
+  height: 8vh;
+  top : 0;
+}
+#spQry{
+  height: 8vh;
+  top: 8vh;
+}
+#Ansim{
+  height: 8vh;
+  top : 16vh;
+}
+#warning{
+  height: 8vh;
+  top: 24vh;
+}
+#level{
+  height: 8vh;
+  top: 32vh;
+}
+
+/* right */
+.right{
+  grid-area: right;
+  width: 94vw;
+  height: 100vh;
+}
+#map {
+  width: 100%;
+  height: 100%;
+}
+
+/* 마우스포지션 */
+.mousePosition{
+position : absolute;
+top : auto;
+right : 5px;
+bottom : 5px;
+  border: 1px solid grey;
+  border-radius: 10px;
+  padding: 5px;
+  background-color: rgba(225, 225, 225, 0.6);
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 12px;
+}
+/* 축척바 */
+.ol-scale-line {
+left: 95%;
+bottom : 5.3%;
+transform: translate(-50%, 0);
+-ms-transform: translate(-50%, 0)
+}
+
+/* 분류검색 */
+.qryDiv{
+  position: absolute;
+  display: none;
+  top: 1px;
+  left: 6.3vw;
+  width: 255px;
+  height: auto;
+}
+.attQueryDiv {
+position: absolute;
+/* display: none; */
+/* top: 1px;
+left: 6.3vw; */
+width: 255px;
+/* height: 250px; */
+background-color: rgba(255, 255, 255, 0.9);
+font-family:'배달의민족 한나체 Pro OTF';
+font-size: 1em;
+line-height: 1.45;
+border-radius: 2px;
+border: 2px solid midnightblue;
+box-shadow: 0px 0px 15px rgba(100, 100, 100, 0.5);
+/* z-index: 4; */
+/* overflow: scroll; */
+}
+.attQueryDiv select {
+width: 225px;
+height: 35px;
+border: 1px solid lightgrey;
+border-radius: 3px;
+margin: 10px 10px 13px 10px;
+}
+.attQueryDiv input {
+width: 225px;
+height: 35px;
+border: 1px solid lightgrey;
+border-radius: 3px;
+margin: 0px auto 20px 10px;
+}
+.attQueryDiv label {
+color: grey;
+margin: 10px 10px 0px 10px;
+}
+.attQryRun {
+color: white;
+background-color: rgba(22, 85, 167, 1);
+border-radius: 3px;
+border: 1px solid black;
+height: 35px;
+width: 50px;
+font-family:'배달의민족 한나체 Pro OTF';
+font-size: 1em;
+margin: 10px 10px 10px 185px;
+}
+.attQryRun:hover{
+  background-color: rgba(0, 60, 136,1);
+}
+#resultDiv{
+  display: none;
+  position: absolute;
+  top: 180px;
+  width: 255px;
+  height: auto;
+  border : 1.5px solid midnightblue;
+  color : white;
+}
+#resultLayerDiv{
+  position: absolute;
+  display: block;
+  background-color : white;
+  color : black;
+}
+#headerDiv{
+  display: block;
+  background-color: white;
+  width: 251px;
+  height: 35px;
+  color : black;
+  border-bottom : 2px solid midnightblue;
+}
+#resultOpen{
+  position:absolute;
+  top: 0.5px;
+  right: 0.5px;
+  width: auto;
+  height: auto;
+  background-color: rgb(190, 182, 182);
+  border: 1px solid rgb(190, 182, 182);
+  border-radius: 2px;
+}
+#selectLayer{
+  width: 100px;
+}
+#selectAttribute{
+  width: 100px;
+}
+#resultTest{
+  background-color : white;
+}
+#resultTest:hover{
+  background-color:  gray;
+}
+ul{
+  list-style: none;
+}
+p{
+  display : inline;
+}
+dt{
+  display:inline;
+  color : orangered;
+  margin-left : 10px;
+  font-size : 5px;
+}
+dd{
+  display:inline;
+  color : black;
+  font-size : 4px;
+  margin-right : 100px;
+}
+
+/* 주변검색 */
+.spQueryDiv {
+  position: absolute;
+  display: none;
+  top: 8.2vh;
+  left: 6.3vw;
+  /* margin: 65px auto auto 45px; */
+  width: 255px;
+  /* height: 250px; */
+  background-color: rgba(255, 255, 255, 0.9);
+  font-family:'배달의민족 한나체 Pro OTF';
+  font-size: 1em;
+  line-height: 1.45;
+  border-radius: 2px;
+  border: 2px solid midnightblue;
+  box-shadow: 0px 0px 15px rgba(100, 100, 100, 0.5);
+  /* z-index: 4; */
+  /* overflow: scroll; */
+}
+.spQueryDiv select {
+width: 225px;
+height: 35px;
+border: 1px solid lightgrey;
+border-radius: 3px;
+margin: 10px auto 10px 10px;
+}
+.spQueryDiv input {
+width: 225px;
+height: 35px;
+border: 1px solid lightgrey;
+border-radius: 3px;
+margin: 10px auto 10px 10px;
+}
+.spQueryDiv label {
+color: grey;
+margin: 10px 10px 0px 10px;
+}
+.spUserInput {
+color: white;
+background-color: rgb(95, 125, 207);
+border-radius: 3px;
+border: 1px solid rgb(0, 0, 0);
+height: 35px;
+width: 50px;
+margin: 10px;
+}
+#bufferDistance {
+width: 100px;
+}
+#distanceUnits {
+width: 100px;
+margin: 0px auto 0px 20px;;
+}
+.spUserInput.clicked{
+background-color: rgb(230, 107, 107);
+}
+.spQryRun {
+color: white;
+background-color: green;
+border-radius: 3px;
+border: 1px solid black;
+font-family:'배달의민족 한나체 Pro OTF';
+font-size: 1em;
+height: 35px;
+width: 50px;
+margin: 10px 10px 10px 32px;
+}
+.spQryRun:hover{
+  background-color: darkgreen;
+}
+.spQryClear {
+/* position: absolute; */
+color: white;
+background-color: darkgrey;
+border-radius: 3px;
+border: 1px solid black;
+font-family:'배달의민족 한나체 Pro OTF';
+font-size: 1em;
+height: 35px;
+width: 50px;
+margin: 10px;
+}
+.spQryClear:hover{
+  background-color: slategray
+}
+
+/* 결과테이블 */
+.attListDiv {
+position: absolute;
+bottom: 0;
+left:0;
+display: none;
+margin: auto auto auto auto;
+/* padding: 10px; */
+width: auto;
+/* height: auto; */
+height: auto;
+max-height: 250px; 
+background-color: rgba(255, 255, 255, 0.9);
+font-family:'배달의민족 한나체 Pro OTF';
+font-size: 1em;
+line-height: 1.45;
+border-radius: 2px;
+border: 1px solid #d1d1d1;
+box-shadow: 2px 3px 2px rgba(0, 0, 0, 0.5);
+/* z-index: 5; */
+overflow: scroll;
+}
+#attQryTable {
+padding: 0;
+border-collapse: collapse;
+}
+#attQryTable, td, th {
+padding: 0px 5px 0px 5px;
+border: 1px solid black;
+}
+#attQryTable th {
+color: white;
+background-color: midnightblue;
+position: sticky;
+top: 0;
+font-style: normal;
+padding: 5px 10px 5px 10px;
+}
+#attQryTable tr:hover{
+background-color: lightgrey;
+}
+
+/* 안심시설 */
+#AnsimLayer{
+  width: 150px;
+  height: 60px;
+  background-color: white;
+  border-radius: 2px;
+  border: 1px solid skyblue;
+  position: absolute;
+  left: 6.3vw;
+  top: 16vh;
+  text-align: center;
+  vertical-align : middle;
+  visibility: hidden;
+}
+.layerBtn{
+  border: none;
+  background-color: white;
+  font-family:'배달의민족 한나체 Air OTF';
+  margin:10px;
+}
+.layerImg{
+  border-radius: 50%;
+  background-color: lightgray;
+  border: 15px;
+  border-color: lightgray;
+}
+/* .layerImg:hover{
+  background-color: lightblue;
+}
+.layerBtn:hover{
+  color: skyblue;
+} */
+
+/* 범죄주의구간 */
+#warningLegendDiv{
+  position: absolute;
+  top: 32vh;
+  right: 5px;
+}
+#warningLegendOpen{
+  position: absolute;
+  top: 0px;
+  right: 5px;
+  visibility: hidden;
+  width : 140px;
+  height : 24px;
+  background-color : white;
+  border : 1.3px solid gray;
+  border-left : 0px;
+  border-right : 0px;
+  text-align : left;
+  cursor: pointer;
+}
+.warningLegend{
+  width: 140px;
+  height: 120px;
+  position: absolute;
+  right: 5px;
+  top:25px;
+  visibility: hidden;
+  background-color : white;
+  cursor: pointer;
+}
+.warningLegend img{
+  width: 95%;
+  height: 95%;
+  position : absolute;
+  left : 3px;
+  top : 4px;
+  visibility: hidden;
+}
+
+/* 범죄지수등급 */
+#levelLayer{
+  width: auto;
+  height: auto;
+  background-color: white;
+  border-radius: 2px;
+  border: 1px solid skyblue;
+  position: absolute;
+  left: 6.3vw;
+  top: 32vh;
+  text-align: center;
+  vertical-align : middle;
+  visibility: hidden;
+}
+.levelBtn{
+  width: 100px;
+  height: 30px;
+  display: block;
+  margin: 3px ;
+  background-color: lightblue;
+  font-family: '배달의민족 한나체 Pro OTF';
+  align-items: center;
+  border: white;
+  border-radius: 3px;
+}
+.levelBtn:hover{
+  background-color: rgb(0, 60, 136,1);
+  color: white;
+}
+.levelBtn.clicked{
+  background-color: rgb(0, 60, 136,1);
+  color: white;
+}
+#levelLegendDiv{
+  position: absolute;
+  top: 57vh;
+  right: 5px;
+}
+#levelLegendOpen{
+  position: absolute;
+  top: 0px;
+  right: 5px;
+  visibility: hidden;
+  width : 140px;
+  height : 24px;
+  background-color : white;
+  border : 1.3px solid gray;
+  border-left : 0px;
+  border-right : 0px;
+  text-align : left;
+  cursor: pointer;
+}
+.levelLegend{
+  width: 390px;
+  height: 180px;
+  position: absolute;
+  right: 5px;
+  top:25px;
+  visibility: hidden;
+  background-color : white;
+  cursor: pointer;
+}
+.levelLegend img{
+  width: 95%;
+  height: 95%;
+  position : absolute;
+  left : 10px;
+  top : 5px;
+  visibility: hidden;
+}
+
+/* 배경지도 */
+#backMapBtn {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 55px;
+  height: 50px;
+  background-color: rgba(22, 85, 167, 0.6);
+  font-family:'배달의민족 한나체 Pro OTF';
+  font-size: 12px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+#backMapBtn:hover{
+background-color: rgb(0, 60, 136,1);
+}
+#backMapList{
+  width : 100px;
+  height : 210px;
+  position : absolute;
+  top : 10px;
+  right : 68px;
+  background-color: white;
+  border : 1px solid skyblue;
+  border-radius: 3px;
+}
+#center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+.backMapListBtn{
+  width: 90px;
+  height: 27px;
+  background-color: lightblue;
+  font-family:'배달의민족 한나체 Pro OTF';
+  border : white;
+  border-radius : 3px;
+  margin: 1px;
+  line-height: 0;
+}
+.backMapListBtn:hover{
+  background-color: rgb(0, 60, 136,1);
+  color: white;
+}
+
+/* 현위치 */
+#liveLocationBtn{
+  z-index: 2000;
+  position: absolute;
+  background-color: rgba(22, 85, 167, 0.6);
+  width: 32px;
+  height: 32px;
+  font-size: 9px;
+  right: 10px;
+  top: 80px;
+  border-radius: 3px;
+  font-family:'배달의민족 한나체 Pro OTF';
+  color: black;
+  cursor: pointer;
+}
+  #liveLocationBtn:hover{
+  background-color: rgb(0, 60, 136,1);
+}
+  #liveLocationBtn.clicked{
+  background-color: rgba(170, 22, 22, 0.8);
+}
+  #liveLocationBtn.clicked:hover{
+  background-color: rgb(170, 22, 22);
+}
+
+/* 거리측정 */
+#measureLength{
+  position: absolute;
+  background-color: rgba(22, 85, 167, 0.6);
+  width: 32px;
+  height: 32px;
+  font-size: 9px;
+  right: 10px;
+  top: 122px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-bottom:1.25px solid;
+  font-family:'배달의민족 한나체 Pro OTF';
+  color: black;
+  cursor: pointer;
+}
+  #measureLength:hover{
+  background-color: rgb(0, 60, 136,1);
+}
+  #measureLength.clicked{
+  background-color: rgba(170, 22, 22, 0.8);
+}
+  #measureLength.clicked:hover{
+  background-color: rgb(170, 22, 22);
+}
+
+/* 면적측정 */
+#measureExtent{
+  position: absolute;
+  background-color: rgba(22, 85, 167, 0.6);
+  width: 32px;
+  height: 32px;
+  font-size: 9px;
+  right: 10px;
+  top: 154px;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-top:1.25px solid;
+  font-family:'배달의민족 한나체 Pro OTF';
+  color: black;
+  cursor: pointer;
+}
+  #measureExtent:hover{
+  background-color: rgb(0, 60, 136,1);
+}
+  #measureExtent.clicked{
+  background-color: rgba(170, 22, 22, 0.8);
+}
+  #measureExtent.clicked:hover{
+  background-color: rgb(170, 22, 22);
+}
+
+/* 팝업정보창 */
+.ol-popup{
+  position: absolute;
+  background-color: white;
+  font-family:'배달의민족 한나체 Pro OTF';
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #cccccc;
+  bottom: 12px;
+  left: -50px;
+  min-width: 280px;
+}
+.ol-popup:after, .ol-popup:before{
+  top: 100%;
+  border: solid transparent;
+  content: "";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+.ol-popup:after{
+  border-top-color: white;
+  border-width: 10px;
+  left: 48px;
+  margin-left: -10px;
+}
+.ol-popup:before{
+  border-top: #cccccc;
+  border-width: 11px;
+  left: 48px;
+  margin-left: -11px;
+}
+.ol-popup-closer{
+  text-decoration: none;
+  position: absolute;
+  top: 2px;
+  right: 8px;
+}
+.ol-popup-closer:after{
+  content: "x";
+}
+
+/* 측정 */
+
+.ol-tooltip{
+position: relative;
+background: black;
+border-radius: 4px;
+color: white;
+padding:  4px 8px;
+opacity: 0.7;
+white-space: nowrap;
+font-size: 12px;
+}
+.ol-tooltip-measure{
+opacity: 1;
+font-weight: bold;
+}
+.ol-tooltip-static{
+background-color: #ffcc33;
+color:  black;
+border:  1px solid white;
+}
+.ol-tooltip-measure:before,
+.ol-tooltip-measure:before{
+border-top: 6px solid black;
+border-right: 6px solid transparent;
+border-left: 6px solid transparent;
+content: "";
+position: absolute;
+bottom: -6px;
+margin-left: -7px;
+left: 50%;
+}
+.ol-tooltip-static::before{
+border-top-color: #ffcc33;
+}
+
+.ol-dragbox{
+  border: 2px dashed grey;
+  background-color: rgba(200, 200, 200, 0.6);
+} 
