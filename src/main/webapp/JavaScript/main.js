@@ -443,15 +443,15 @@ async function searchFeatures(){
 
     if(layer.options.selectedIndex == 0){
         Swal.fire({
-            text : '검색할 시설물을 선택해주세요',
+            text : '검색할 시설물을 선택해주세요!',
         });
     } else if(attribute.options.selectedIndex == 0){
         Swal.fire({
-            text : '유형을 선택해주세요',
+            text : '유형을 선택해주세요!',
         });
     } else if(district.options.selectedIndex == 0){
         Swal.fire({
-            text : '자치구를 선택해주세요',
+            text : '자치구를 선택해주세요!',
         });
     } else{
          //layer.options[layer.selectedIndex].value;
