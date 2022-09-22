@@ -65,6 +65,117 @@
 // });
 
 /*start : DB query*/
+
+// var tr;
+// var th;
+// var col;
+// function newpopulateQueryTable(url){
+//     if(typeof attributePanel !== 'undefined'){
+//         if(attributePanel.parentElement !== null){
+//             attributePanel.close();
+//         }
+//     }
+//     $.getJSON(url,function (data){
+//         col = [];
+//         col.push('id');
+//         for(var i=0; i<data.features.length; i++){
+//             for(var key in data.features[i].properties){
+//                 if(col.indexOf(key) === -1){
+//                     col.push(key);
+//                 }
+//             }
+//         }
+//         var table = document.createElement("table");
+
+//         table.setAttribute("class","table table-bordered table-hover table-condensed");
+//         table.setAttribute("id","attQryTable");
+
+//         tr = table.insertRow(-1);
+
+//         for(var i =0; i< col.length; i++){
+//             th = document.createElement("th");
+//                 th.innerHTML = col[i];
+//                 tr.appendChild(th);
+//         }
+
+//         for(var i = 0; i<data.features.length; i++){
+//                 tr = table.insertRow(-1);
+//                 for(var j = 0; j<col.length;j++){
+//                     var tabCell = tr.insertCell(-1);
+//                     if(j==0){tabCell.innerHTML=data.features[i]['id'];}
+//                     else{   
+//                         tabCell.innerHTML = data.features[i].properties[col[j]];
+//                     }
+//                 }
+//         }
+
+//         var tabDiv = document.getElementById("attListDiv");
+
+//         var delTab = document.getElementById("attQryTable");
+//         if(delTab){
+//             tabDiv.removeChild(delTab);
+//         }
+
+//         tabDiv.appendChild(table);
+
+//         //document.getElementById("attListDiv").style.display="block";
+//     });
+// }
+// //검색 결과 테이블 출력
+// function newaddRowHandlers() {
+//     var attTable = document.getElementById("attQryTable");
+//     var rows = attTable.rows;
+//     var heads = attTable.getElementsByTagName('th');
+//     var col_no;
+//     for (var i = 0; i < heads.length; i++) {
+//         // Take each cell
+//         var head = heads[i];
+//         if (head.innerHTML == 'id') {
+//             col_no = i + 1;
+//         }
+//     }
+//     for (i = 0; i < rows.length; i++) {
+//         rows[i].onclick = function () {
+//             return function () {
+//                 clickSelectedFeatureOverlay.getSource().clear();
+
+//                 $(function () {
+//                     $("#attQryTable td").each(function () {
+//                         $(this).parent("tr").css("background-color", "white");
+//                     });
+//                 });
+//                 var cell = this.cells[col_no - 1];
+//                 var id = cell.innerHTML;
+//                 $(document).ready(function () {
+//                     $("#attQryTable td:nth-child(" + col_no + ")").each(function () {
+//                         if ($(this).text() == id) {
+//                             $(this).parent("tr").css("background-color", "#d1d8e2");
+//                         }
+//                     });
+//                 });
+
+//                 var features = queryGeoJSON.getSource().getFeatures();
+
+//                 for (i = 0; i < features.length; i++) {
+//                     if (features[i].getId() == id) {
+//                         clickSelectedFeatureOverlay.getSource().addFeature(features[i]);
+
+//                         clickSelectedFeatureOverlay.getSource().on('addfeature', function () {
+//                             map.getView().fit(
+//                                 clickSelectedFeatureOverlay.getSource().getExtent(),
+//                                 { duration: 1500, size: map.getSize(), maxZoom: 14 }
+//                             );
+//                         });
+
+//                     }
+//                 }
+//             };
+//         }(rows[i]);
+//     }
+
+
+// }
+// /* DB query end*/
 var geojson;
 var queryGeoJSON;
 
@@ -194,7 +305,7 @@ function setAtt(ta){
         value_attribute='div'
     }
 }
-//검색 결과 레이어 씌우기
+//layering found features
 function newaddGeoJsonToMap(url){
     queryGeoJSON = new ol.layer.Vector({
         source : new ol.source.Vector({
@@ -226,119 +337,245 @@ function resultOpen(){
     }
 }
 
-
-var tr;
-var th;
-var col;
-function newpopulateQueryTable(url){
-    if(typeof attributePanel !== 'undefined'){
-        if(attributePanel.parentElement !== null){
-            attributePanel.close();
-        }
-    }
-    $.getJSON(url,function (data){
-        col = [];
-        col.push('id');
-        for(var i=0; i<data.features.length; i++){
-            for(var key in data.features[i].properties){
-                if(col.indexOf(key) === -1){
-                    col.push(key);
-                }
-            }
-        }
-        var table = document.createElement("table");
-
-        table.setAttribute("class","table table-bordered table-hover table-condensed");
-        table.setAttribute("id","attQryTable");
-
-        tr = table.insertRow(-1);
-
-        for(var i =0; i< col.length; i++){
-            th = document.createElement("th");
-                th.innerHTML = col[i];
-                tr.appendChild(th);
-        }
-
-        for(var i = 0; i<data.features.length; i++){
-                tr = table.insertRow(-1);
-                for(var j = 0; j<col.length;j++){
-                    var tabCell = tr.insertCell(-1);
-                    if(j==0){tabCell.innerHTML=data.features[i]['id'];}
-                    else{
-                        tabCell.innerHTML = data.features[i].properties[col[j]];
-                    }
-                }
-        }
-
-        var tabDiv = document.getElementById("attListDiv");
-
-        var delTab = document.getElementById("attQryTable");
-        if(delTab){
-            tabDiv.removeChild(delTab);
-        }
-
-        tabDiv.appendChild(table);
-
-        //document.getElementById("attListDiv").style.display="block";
-    });
+var whatConv;
+function convX(dd){
+    whatConv=dd.value;
 }
-//검색 결과 테이블 출력
-function newaddRowHandlers() {
-    var attTable = document.getElementById("attQryTable");
-    var rows = attTable.rows;
-    var heads = attTable.getElementsByTagName('th');
-    var col_no;
-    for (var i = 0; i < heads.length; i++) {
-        // Take each cell
-        var head = heads[i];
-        if (head.innerHTML == 'id') {
-            col_no = i + 1;
+
+var whatDistrict;
+function districtX(ff){
+    whatDistrict=ff.value;
+    
+    if(whatDistrict=="구"){
+        newaddGeoJsonToMap("http://localhost:8080/geoserver/Ansim/ows?service=WFS&version=1.0.0\
+        &request=GetFeature&typeName=" +"admin_sgg"+"\
+        &SRSNAME=EPSG:5179&outputFormat=application/json");
+    } else{
+        newaddGeoJsonToMap("http://localhost:8080/geoserver/Ansim/ows?service=WFS&version=1.0.0\
+        &request=GetFeature&typeName=" +"admin_sgg"+"\
+        &SRSNAME=EPSG:5179"+"&CQL_FILTER="+"sgg_nm"+"+"+'Like'+"+'"+whatDistrict+"'\
+        &outputFormat=application/json");
+    }
+    
+}
+
+function changeLayerName(name){
+    switch(name){
+        case 'Ansim:conv' :
+            return '안심편의점';
+            break;
+        case 'Ansim:pol' :
+            return '경찰서';
+            break;
+    }
+}
+
+var resultLayerDiv=document.getElementById("resultLayerDiv");
+var searchList =[];
+
+//when no results
+function NoneSearchFeatures(string) {
+    var queryResult = document.createElement('div');
+    queryResult.innerHTML = string;
+    resultLayerDiv.appendChild(queryResult); //child node
+}
+
+//init expressed search features
+function InitFeatures() {
+    //init list layout
+    if (resultLayerDiv.hasChildNodes) {
+        while (resultLayerDiv.hasChildNodes()) {
+            resultLayerDiv.removeChild(resultLayerDiv.firstChild);
         }
     }
-    for (i = 0; i < rows.length; i++) {
-        rows[i].onclick = function () {
-            return function () {
-                clickSelectedFeatureOverlay.getSource().clear();
 
-                $(function () {
-                    $("#attQryTable td").each(function () {
-                        $(this).parent("tr").css("background-color", "white");
-                    });
-                });
-                var cell = this.cells[col_no - 1];
-                var id = cell.innerHTML;
-                $(document).ready(function () {
-                    $("#attQryTable td:nth-child(" + col_no + ")").each(function () {
-                        if ($(this).text() == id) {
-                            $(this).parent("tr").css("background-color", "#d1d8e2");
-                        }
-                    });
-                });
-
-                var features = queryGeoJSON.getSource().getFeatures();
-
-                for (i = 0; i < features.length; i++) {
-                    if (features[i].getId() == id) {
-                        clickSelectedFeatureOverlay.getSource().addFeature(features[i]);
-
-                        clickSelectedFeatureOverlay.getSource().on('addfeature', function () {
-                            map.getView().fit(
-                                clickSelectedFeatureOverlay.getSource().getExtent(),
-                                { duration: 1500, size: map.getSize(), maxZoom: 14 }
-                            );
-                        });
-
-                    }
-                }
-            };
-        }(rows[i]);
+    //searchResults Layer init
+    if (searchLayer) {
+        searchLayer.getSource().clear();
+        map.removeLayer(searchLayer);
     }
-    var rotn = document.getElementById("rotn");
-    rotn.innerHTML="&nbsp검색결과&nbsp<strong>총&nbsp<span style='color: orangered;'>"+(rows.length-1)+"</span>건</strong>"
-
 }
-/* DB query end*/
+//page nums UI update
+// function InitPages(counts) {
+//     pageNo = 1;
+//     document.getElementById("curPage").value = pageNo;
 
+//     if (counts == 0) {
+//         document.getElementById("searchTool").style.display = "none";
+//         return;
+//     }
+//     document.getElementById("searchTool").style.display = "block";
+//     maxPageNo = Math.ceil(counts / 5);
+//     document.getElementById("maxPage").innerHTML = maxPageNo;
+//     document.getElementById("curPage").max = maxPageNo;
+// }
+
+var pageNo;
+var maxPageNo;
+
+var searchList = []; //search results
+var searchLayer; //search results layer
+
+var url
+async function searchFeatures(){
+    InitFeatures();
+    map.set("isLoading","YES");
+        
+    queryGeoJSON.getSource().clear();
+    featureOverlay.getSource().clear();
+
+    map.removeLayer(featureOverlay)
+    map.removeLayer(queryGeoJSON);
+    if(featureOverlay){
+        queryGeoJSON.getSource().clear();
+        featureOverlay.getSource().clear();
+        map.removeLayer(featureOverlay);
+    }
+    if(queryGeoJSON){
+        queryGeoJSON.getSource().clear();
+        featureOverlay.getSource().clear();
+        map.removeLayer(queryGeoJSON);
+    }
+    var layer = document.getElementById("selectLayer");
+    var attribute = document.getElementById("selectAttribute");
+    var district = document.getElementById("selectDistrict");
+    //var txt = document.getElementById("enterValue");
+
+    if(layer.options.selectedIndex == 0){
+        Swal.fire({
+            text : '검색할 시설물을 선택해주세요',
+        });
+    } else if(attribute.options.selectedIndex == 0){
+        Swal.fire({
+            text : '유형을 선택해주세요',
+        });
+    } else if(district.options.selectedIndex == 0){
+        Swal.fire({
+            text : '자치구를 선택해주세요',
+        });
+    } else{
+         //layer.options[layer.selectedIndex].value;
+        //attribute.options[attribute.selectedIndex].text;
+        //var value_txt = txt.value;
+        var value_txt =  "%25" + whatDistrict +"%25'";
+        var value_txt2 = "%25" + whatConv +"%25'";
+    
+        if(value_layer=="Ansim:comv"){
+            value_attribute="store_name"
+        } else if(value_layer=="Ansim:pol"){
+            value_attribute="div"
+        }
+
+        var urlDefault ="http://localhost:8080/geoserver/Ansim/ows?service=WFS&version=1.0.0\
+        &request=GetFeature&SRSNAME=EPSG:5179&outputFormat=application/json&typeName="
+        if(whatConv=="convAll"){
+            url = urlDefault 
+            + value_layer
+            +"&CQL_FILTER="+addsgg
+            +"+"+'Like'+"+'"+value_txt
+        } else if(whatConv=="polAll"){
+            url = urlDefault
+            +value_layer
+            +"&CQL_FILTER="+addsgg
+            +"+"+'Like'+"+'"+value_txt
+        } 
+        else{
+            url = urlDefault
+            + value_layer
+            +"&CQL_FILTER="+addsgg
+            +"+"+'Like'+"+'"+value_txt
+            +" AND "+value_attribute
+            +"+"+'Like'+"+'"+value_txt2
+        }
+
+        var resultDiv = document.getElementById("resultDiv");
+        resultDiv.style.display = "block";
+
+        var searchCount=0;
+        await fetch(url)
+        .then((response) => { return response.json() })
+        .then((data) => {
+            searchCount = data['numberReturned'];
+            searchList = data['features'];
+            console.log(searchCount)
+            console.log(searchList);
+        });
+        
+        //InitPages(searchCount);
+        if(searchCount==0){NoneSearchFeatures("검색 결과가 없습니다."); return;}
+        var rotn = document.getElementById("rotn");
+        rotn.innerHTML="&nbsp검색결과&nbsp<strong>총&nbsp<span style='color: orangered;'>"+searchCount+"</span>건</strong>"
+
+        newaddGeoJsonToMap(url);
+        map.set("isLoading",'NO');
+        
+        SwitchPage('first');
+    }
+}
+
+function SwitchPage() {
+    //if (CheckPage(command) == -1) return; //pre-check desired page
+    InitFeatures();
+
+    var featureSource = new ol.source.Vector();
+    var index = (pageNo - 1) * 5;
+
+    for (var i = 0; i < 5; i++) {
+        if (index == searchList.length) break;
+        ShowFeatures(searchList.at(index), i);
+
+        var feature = new ol.Feature({
+            geometry: new ol.geom.Point(searchList.at(index)["geometry"]["coordinates"])
+                .transform('EPSG:4326', 'EPSG:3857')
+            
+        });
+        feature.setProperties(searchList.at(index)["properties"]);
+        console.log(feature);
+        featureSource.addFeature(feature);
+        
+        index++;
+    }
+
+    // searchLayer = new ol.layer.Vector({
+    //     source: featureSource,
+    //     style: querySelectedFeatureStyle
+    // })
+
+    // map.addLayer(searchLayer);
+}
+
+//Show search results to HTML layout
+function ShowFeatures(feature, i) {
+    //feature.setStyle(iconStyle);
+    var features = feature["properties"];
+
+    //create div and add to list
+    var queryResult = document.createElement('div');
+    queryResult.setAttribute("id", i); //id = index
+    
+    // var queryThumb = document.createElement('div');
+    // queryThumb =
+    //     "<div id='queryThumb' style='background: linear-gradient(to left,"
+    //     + "rgba(255, 255, 255, 0),"
+    //     + "rgba(0, 0, 0, 0.7)"
+    //     + "), url(" + features["store_name"] + ");"
+    //     + "opacity: 0.5; background-size:cover;'></div> "
+    // queryResult.innerHTML = queryThumb;
+        
+    var queryText = document.createElement('div');
+    queryText.setAttribute("id", "queryText"); //id = index
+    queryText.innerHTML =
+        "<p><span style='color: rgb(200, 200, 200); font-size: 15px;'>" + features["store_name"] + "</span><br>"
+        + "<span style='font-size: 20px;'>" + features["tel"] + "</span><br>"
+        + "<span style='color: rgb(200, 200, 200); font-size: 1em;'>" + " " + features["address"] + "</span></p>";
+    
+    //queryResult.addEventListener("click", ExtentFeatures);
+    resultLayerDiv.appendChild(queryResult);
+    queryResult.appendChild(queryText);
+}
+
+
+//==============================================================================================================================
 
 /* 주변 시설물 찾기 */
 var spQry = document.getElementById("spQry");
@@ -378,16 +615,21 @@ spQry.addEventListener("click", () => {
 
 })
 
-
-function changeLayerName(name){
-    switch(name){
-        case 'Ansim:conv' :
-            return '안심편의점';
-            break;
-        case 'Ansim:pol' :
-            return '경찰서';
-            break;
-    }
+//주변검색 그리기
+var markerFeature;
+function addInteractionForSpatialQuery(intType) {
+    draw = new ol.interaction.Draw({
+        source: clickSelectedFeatureOverlay.getSource(),
+        type: intType,
+        style: interactionStyle
+    });
+    map.addInteraction(draw);
+    draw.on('drawend', function (e) {
+        markerFeature = e.feature;
+        markerFeature.set('geometry', markerFeature.getGeometry());
+        map.removeInteraction(draw);
+        document.getElementById('spUserInput').classList.toggle('clicked');
+    })
 }
 
 function addMapLayerList_spQry() {
@@ -413,131 +655,8 @@ function addMapLayerList_spQry() {
     });
 
 };
-//주변검색 그리기
-var markerFeature;
-function addInteractionForSpatialQuery(intType) {
-    draw = new ol.interaction.Draw({
-        source: clickSelectedFeatureOverlay.getSource(),
-        type: intType,
-        style: interactionStyle
-    });
-    map.addInteraction(draw);
-    draw.on('drawend', function (e) {
-        markerFeature = e.feature;
-        markerFeature.set('geometry', markerFeature.getGeometry());
-        map.removeInteraction(draw);
-        document.getElementById('spUserInput').classList.toggle('clicked');
-    })
-}
-
-var whatConv;
-function convX(dd){
-    whatConv=dd.value;
-}
-
-var whatDistrict;
-function districtX(ff){
-    whatDistrict=ff.value;
-    
-    if(whatDistrict=="구"){
-        newaddGeoJsonToMap("http://localhost:8080/geoserver/Ansim/ows?service=WFS&version=1.0.0\
-        &request=GetFeature&typeName=" +"admin_sgg"+"\
-        &SRSNAME=EPSG:5179&outputFormat=application/json");
-    } else{
-        newaddGeoJsonToMap("http://localhost:8080/geoserver/Ansim/ows?service=WFS&version=1.0.0\
-        &request=GetFeature&typeName=" +"admin_sgg"+"\
-        &SRSNAME=EPSG:5179"+"&CQL_FILTER="+"sgg_nm"+"+"+'Like'+"+'"+whatDistrict+"'\
-        &outputFormat=application/json");
-    }
-    
-}
-
-if(value_layer=="Ansim:comv"){
-    value_attribute="store_name"
-} else if(value_layer=="Ansim:pol"){
-    value_attribute="div"
-}
-
-
-var url
 
 $(function (){
-    document.getElementById('attQryRun').onclick = function(){
-        map.set("isLoading","YES");
-        
-        queryGeoJSON.getSource().clear();
-        featureOverlay.getSource().clear();
-    
-        map.removeLayer(featureOverlay)
-        map.removeLayer(queryGeoJSON);
-        if(featureOverlay){
-            queryGeoJSON.getSource().clear();
-            featureOverlay.getSource().clear();
-            map.removeLayer(featureOverlay);
-        }
-        if(queryGeoJSON){
-            queryGeoJSON.getSource().clear();
-            featureOverlay.getSource().clear();
-            map.removeLayer(queryGeoJSON);
-        }
-        var layer = document.getElementById("selectLayer");
-        var attribute = document.getElementById("selectAttribute");
-        var district = document.getElementById("selectDistrict");
-        //var txt = document.getElementById("enterValue");
-    
-        if(layer.options.selectedIndex == 0){
-            Swal.fire({
-                text : '검색할 시설물을 선택해주세요',
-            });
-        } else if(attribute.options.selectedIndex == 0){
-            Swal.fire({
-                text : '유형을 선택해주세요',
-            });
-        } else if(district.options.selectedIndex == 0){
-            Swal.fire({
-                text : '자치구를 선택해주세요',
-            });
-        } else{
-             //layer.options[layer.selectedIndex].value;
-            //attribute.options[attribute.selectedIndex].text;
-            //var value_txt = txt.value;
-            var value_txt =  "%25" + whatDistrict +"%25'";
-            var value_txt2 = "%25" + whatConv +"%25";
-        
-
-            if(whatConv=="convAll"){
-                url = "http://localhost:8080/geoserver/Ansim/ows?service=WFS&version=1.0.0\
-                &request=GetFeature&typeName=" + value_layer+"\
-                &SRSNAME=EPSG:5179"+"&CQL_FILTER="+addsgg+"+"+'Like'+"+'"+value_txt+"\
-                &outputFormat=application/json"
-            } else if(whatConv=="polAll"){
-                url = "http://localhost:8080/geoserver/Ansim/ows?service=WFS&version=1.0.0\
-                &request=GetFeature&typeName=" + value_layer+"\
-                &SRSNAME=EPSG:5179"+"&CQL_FILTER="+addsgg+"+"+'Like'+"+'"+value_txt+"\
-                &outputFormat=application/json"
-            } 
-            else{
-                url = "http://localhost:8080/geoserver/Ansim/ows?service=WFS&version=1.0.0\
-            &request=GetFeature&typeName=" + value_layer+"\
-            &SRSNAME=EPSG:5179"+"&CQL_FILTER="+addsgg+"+"+'Like'+"+'"+value_txt+" AND "+value_attribute+"+"+'Like'+"+'"+value_txt2+"'\
-            &outputFormat=application/json"
-            }
-
-            var resultDiv = document.getElementById("resultDiv");
-            resultDiv.style.display = "block";
-
-            newaddGeoJsonToMap(url);
-            //testResult(url);
-            newpopulateQueryTable(url);
-            setTimeout(function(){ newaddRowHandlers(url);},1000);
-            map.set("isLoading",'NO');
-        }
-    };
-
-    function testResult(){
-        var resultLayer = document.getElementById("resultLayerDiv")
-    }
-
     document.getElementById("srcCriteria").onchange = function () {
         if (queryGeoJSON) {
             queryGeoJSON.getSource().clear();
