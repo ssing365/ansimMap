@@ -565,8 +565,8 @@ function ShowFeatures(feature, i) {
     var queryText = document.createElement('div');
     queryText.setAttribute("id", "queryText"); //id = index
     queryText.innerHTML =
-        "<p><span style='color: rgb(200, 200, 200); font-size: 15px;'>" + features["store_name"] + "</span><br>"
-        + "<span style='font-size: 20px;'>" + features["tel"] + "</span><br>"
+        "<p><span style='color: rgb(200, 200, 200); font-size: 15px;'>" + features["tel"] + "</span><br>"
+        + "<span style='font-size: 20px;'>" + features["store_name"] + "</span><br>"
         + "<span style='color: rgb(200, 200, 200); font-size: 1em;'>" + " " + features["address"] + "</span></p>";
     
     //queryResult.addEventListener("click", ExtentFeatures);
