@@ -282,6 +282,7 @@ var s = $('#selectAttribute')
 var value_layer;
 var value_attribute;
 var addsgg;
+var sxsx;
 function setAtt(ta){
     s.empty();
     s.append("<option value=\"\" selected>유형 선택</option>")
@@ -295,6 +296,7 @@ function setAtt(ta){
         value_layer='Ansim:conv'
         addsgg='sgg'
         value_attribute='store_name'
+        sxsx='a';
     } else if(ta.value=="pol"){
         s.append("<option value='polAll'>경찰서 전체</option>");
         s.append("<option value='경찰서'>경찰서</option>");
@@ -303,6 +305,7 @@ function setAtt(ta){
         value_layer='Ansim:pol'
         addsgg='address'
         value_attribute='div'
+        sxsx='b';
     }
 }
 //layering found features
@@ -325,14 +328,14 @@ function newaddGeoJsonToMap(url){
 
 function resultOpen(){
     var resultOpen = document.getElementById("resultOpen")
-    var resultLayerDiv = document.getElementById("resultLayerDiv");
+    var searchResultDiv = document.getElementById("searchResultDiv");
     if(resultOpen.value=="yes"){
         resultOpen.value="no"
         resultOpen.innerHTML="펼치기"
-        resultLayerDiv.style.display="none";
+        searchResultDiv.style.display="none";
     } else if(resultOpen.value=="no"){
         resultOpen.value="yes"
-        resultLayerDiv.style.display="block";
+        searchResultDiv.style.display="block";
         resultOpen.innerHTML="접기"
     }
 }
@@ -370,22 +373,22 @@ function changeLayerName(name){
     }
 }
 
-var resultLayerDiv=document.getElementById("resultLayerDiv");
+var searchResultDiv=document.getElementById("searchResultDiv");
 var searchList =[];
 
 //when no results
 function NoneSearchFeatures(string) {
     var queryResult = document.createElement('div');
     queryResult.innerHTML = string;
-    resultLayerDiv.appendChild(queryResult); //child node
+    searchResultDiv.appendChild(queryResult); //child node
 }
 
 //init expressed search features
 function InitFeatures() {
     //init list layout
-    if (resultLayerDiv.hasChildNodes) {
-        while (resultLayerDiv.hasChildNodes()) {
-            resultLayerDiv.removeChild(resultLayerDiv.firstChild);
+    if (searchResultDiv.hasChildNodes) {
+        while (searchResultDiv.hasChildNodes()) {
+            searchResultDiv.removeChild(searchResultDiv.firstChild);
         }
     }
 
@@ -394,27 +397,32 @@ function InitFeatures() {
         searchLayer.getSource().clear();
         map.removeLayer(searchLayer);
     }
-}
-//page nums UI update
-// function InitPages(counts) {
-//     pageNo = 1;
-//     document.getElementById("curPage").value = pageNo;
 
-//     if (counts == 0) {
-//         document.getElementById("searchTool").style.display = "none";
-//         return;
-//     }
-//     document.getElementById("searchTool").style.display = "block";
-//     maxPageNo = Math.ceil(counts / 5);
-//     document.getElementById("maxPage").innerHTML = maxPageNo;
-//     document.getElementById("curPage").max = maxPageNo;
-// }
+}
 
 var pageNo;
 var maxPageNo;
 
 var searchList = []; //search results
 var searchLayer; //search results layer
+
+
+var layer = document.getElementById("selectLayer");
+
+//page nums UI update
+function InitPages(counts) {
+    pageNo = 1;
+    document.getElementById("curPage").value = pageNo;
+
+    if (counts == 0) {
+        document.getElementById("searchTool").style.display = "none";
+        return;
+    }
+    document.getElementById("searchTool").style.display = "block";
+    maxPageNo = Math.ceil(counts / 5);
+    document.getElementById("maxPage").innerHTML = maxPageNo;
+    document.getElementById("curPage").max = maxPageNo;
+}
 
 var url
 async function searchFeatures(){
@@ -469,19 +477,16 @@ async function searchFeatures(){
         var urlDefault ="http://localhost:8080/geoserver/Ansim/ows?service=WFS&version=1.0.0\
         &request=GetFeature&SRSNAME=EPSG:5179&outputFormat=application/json&typeName="
         if(whatConv=="convAll"){
-            url = urlDefault 
-            + value_layer
+            url = urlDefault + value_layer
             +"&CQL_FILTER="+addsgg
             +"+"+'Like'+"+'"+value_txt
         } else if(whatConv=="polAll"){
-            url = urlDefault
-            +value_layer
+            url = urlDefault + value_layer
             +"&CQL_FILTER="+addsgg
             +"+"+'Like'+"+'"+value_txt
         } 
         else{
-            url = urlDefault
-            + value_layer
+            url = urlDefault + value_layer
             +"&CQL_FILTER="+addsgg
             +"+"+'Like'+"+'"+value_txt
             +" AND "+value_attribute
@@ -491,7 +496,7 @@ async function searchFeatures(){
         var resultDiv = document.getElementById("resultDiv");
         resultDiv.style.display = "block";
 
-        var searchCount=0;
+        var searchCount = 0;
         await fetch(url)
         .then((response) => { return response.json() })
         .then((data) => {
@@ -501,7 +506,7 @@ async function searchFeatures(){
             console.log(searchList);
         });
         
-        //InitPages(searchCount);
+        InitPages(searchCount);
         if(searchCount==0){NoneSearchFeatures("검색 결과가 없습니다."); return;}
         var rotn = document.getElementById("rotn");
         rotn.innerHTML="&nbsp검색결과&nbsp<strong>총&nbsp<span style='color: orangered;'>"+searchCount+"</span>건</strong>"
@@ -526,7 +531,7 @@ function SwitchPage() {
 
         var feature = new ol.Feature({
             geometry: new ol.geom.Point(searchList.at(index)["geometry"]["coordinates"])
-                .transform('EPSG:4326', 'EPSG:3857')
+                .transform('EPSG:3857', 'EPSG:4326')
             
         });
         feature.setProperties(searchList.at(index)["properties"]);
@@ -536,43 +541,75 @@ function SwitchPage() {
         index++;
     }
 
-    // searchLayer = new ol.layer.Vector({
-    //     source: featureSource,
-    //     style: querySelectedFeatureStyle
-    // })
+    searchLayer = new ol.layer.Vector({
+        source: featureSource,
+        style: querySelectedFeatureStyle
+    })
 
-    // map.addLayer(searchLayer);
+    map.addLayer(searchLayer);
 }
 
 //Show search results to HTML layout
 function ShowFeatures(feature, i) {
     //feature.setStyle(iconStyle);
+
     var features = feature["properties"];
 
     //create div and add to list
     var queryResult = document.createElement('div');
     queryResult.setAttribute("id", i); //id = index
-    
-    // var queryThumb = document.createElement('div');
-    // queryThumb =
-    //     "<div id='queryThumb' style='background: linear-gradient(to left,"
-    //     + "rgba(255, 255, 255, 0),"
-    //     + "rgba(0, 0, 0, 0.7)"
-    //     + "), url(" + features["store_name"] + ");"
-    //     + "opacity: 0.5; background-size:cover;'></div> "
-    // queryResult.innerHTML = queryThumb;
-        
+
     var queryText = document.createElement('div');
     queryText.setAttribute("id", "queryText"); //id = index
-    queryText.innerHTML =
-        "<p><span style='color: rgb(200, 200, 200); font-size: 15px;'>" + features["tel"] + "</span><br>"
-        + "<span style='font-size: 20px;'>" + features["store_name"] + "</span><br>"
-        + "<span style='color: rgb(200, 200, 200); font-size: 1em;'>" + " " + features["address"] + "</span></p>";
-    
+    queryText.innerHTML = whichInnerHTML();
     //queryResult.addEventListener("click", ExtentFeatures);
-    resultLayerDiv.appendChild(queryResult);
+    searchResultDiv.appendChild(queryResult);
     queryResult.appendChild(queryText);
+
+    function whichInnerHTML(){
+        if(sxsx=='a'){
+            return '&nbsp<img src="' 
+            + "resources/images/"
+            + convPng() 
+            + '"style="'
+            + 'width:30px;height:30px;vertical-align:middle'
+            + '" />'
+            +"<span style='font-size: 13px;'>&nbsp <strong>"+ features["store_name"] + "</strong> </span><br>"
+            +"<span style='font-size:11px;'>&nbsp&nbsp주소 : </span>"+ "<span style='color: rgb(160, 160, 160); font-size: 11px;'>" + features["address"] + "</span><br>"
+            +"<span style='font-size:11px;'>&nbsp&nbsp전화번호 : </span>"+ "<span style='color: rgb(160, 160, 160); font-size: 11px;'>" + features["tel"] + "</span><br>";
+        } else if(sxsx=='b'){
+            return '&nbsp<img src="' 
+            + "resources/images/"
+            +"pol.png" 
+            + '"style="'
+            + 'width:30px;height:30px;vertical-align:middle'
+            + '" />'
+            +"<span style='font-size: 13px;'>&nbsp <strong>"+ features["name"] + "</strong> </span><br>"
+            +"<span style='font-size:11px;'>&nbsp&nbsp주소 : </span>"+ "<span style='color: rgb(160, 160, 160); font-size: 11px;'>" + features["address"] + "</span><br>";
+            
+        }
+        function convPng(){
+            if(features["store_name"].includes('CU')){
+                return "cu.png";
+            } else if(features["store_name"].includes('GS')){
+                return "gs25.png"
+            } else if(features["store_name"].includes('세븐일레븐')){
+                return "seveneleven.png"
+            } else if(features["store_name"].includes('미니스')){
+                return "ministop.png"
+            } else if(features["store_name"].includes('씨스페이스')){
+                return "cspace.png"
+            } 
+        }
+    }
 }
+// function ExtentFeatures(e) {
+//     var val = this.id;
+//     var feature = searchLayer.getSource().getFeatures()[val];
+//     var extent = feature.getGeometry().getExtent();
+//     map.getView().fit(extent, { duration: 1590, size: map.getSize(), maxZoom: 15 });
+// }
+
 
 
 //==============================================================================================================================
