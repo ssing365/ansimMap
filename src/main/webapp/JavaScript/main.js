@@ -421,6 +421,7 @@ function InitPages(counts) {
     document.getElementById("searchTool").style.display = "block";
     maxPageNo = Math.ceil(counts / 5);
     document.getElementById("maxPage").innerHTML = maxPageNo;
+    document.getElementById("maxPage").value = maxPageNo;
     document.getElementById("curPage").max = maxPageNo;
 }
 

@@ -91,6 +91,14 @@ transform: translate(-50%, 0);
 }
 
 /* 분류검색 */
+
+#selectLayer{
+  width: 100px;
+}
+#selectAttribute{
+  width: 100px;
+}
+
 .qryDiv{
   position: absolute;
   display: none;
@@ -162,13 +170,14 @@ margin: 10px 10px 10px 185px;
   display: block;
   background-color : white;
   color : black;
-  width: 250px;
+  width: 252px;
   height: auto;
   max-height: fit-content;
 }
-/* #cu{
-  display: inline;
-} */
+#searchTool{
+  position: static;
+  background-color: white;
+}
 #headerDiv{
   display: block;
   background-color: white;
@@ -186,36 +195,6 @@ margin: 10px 10px 10px 185px;
   background-color: rgb(190, 182, 182);
   border: 1px solid rgb(190, 182, 182);
   border-radius: 2px;
-}
-#selectLayer{
-  width: 100px;
-}
-#selectAttribute{
-  width: 100px;
-}
-#resultTest{
-  background-color : white;
-}
-#resultTest:hover{
-  background-color:  gray;
-}
-ul{
-  list-style: none;
-}
-p{
-  display : inline;
-}
-dt{
-  display:inline;
-  color : orangered;
-  margin-left : 10px;
-  font-size : 5px;
-}
-dd{
-  display:inline;
-  color : black;
-  font-size : 4px;
-  margin-right : 100px;
 }
 
 /* 주변검색 */
