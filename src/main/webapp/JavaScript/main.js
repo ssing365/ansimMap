@@ -397,7 +397,6 @@ function InitFeatures() {
         searchLayer.getSource().clear();
         map.removeLayer(searchLayer);
     }
-
 }
 
 var pageNo;
@@ -602,15 +601,23 @@ function ShowFeatures(feature, i) {
                 return "cspace.png"
             } 
         }
+        for(var v=0; v < 5; v++){
+            queryText[v].onclick = function(){
+                    map.getView().fit( 
+                    clickSelectedFeatureOverlay.getSource().getExtent(),
+                    { duration: 1500, size: map.getSize(), maxZoom: 14 }
+                );
+            }
+        }
     }
 }
-// function ExtentFeatures(e) {
-//     var val = this.id;
-//     var feature = searchLayer.getSource().getFeatures()[val];
-//     var extent = feature.getGeometry().getExtent();
-//     map.getView().fit(extent, { duration: 1590, size: map.getSize(), maxZoom: 15 });
-// }
-
+var val;
+function ExtentFeatures(e) {
+    val = this.id;
+    var feature = searchLayer.getSource().getFeatures()[val];
+    var extent = feature.getGeometry().getExtent();
+    map.getView().fit(extent, { duration: 1400, size: map.getSize(), maxZoom: 15 });
+}
 
 
 //==============================================================================================================================

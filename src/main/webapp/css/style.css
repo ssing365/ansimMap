@@ -177,6 +177,15 @@ margin: 10px 10px 10px 185px;
 #searchTool{
   position: static;
   background-color: white;
+  text-align:center;
+}
+#curPage{
+  width:40px;
+  text-align:center;
+}
+#maxPage{
+  width:40px;
+  text-align:center;
 }
 #headerDiv{
   display: block;
