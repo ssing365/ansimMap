@@ -611,13 +611,13 @@ function ShowFeatures(feature, i) {
         }
     }
 }
-var val;
-function ExtentFeatures(e) {
-    val = this.id;
-    var feature = searchLayer.getSource().getFeatures()[val];
-    var extent = feature.getGeometry().getExtent();
-    map.getView().fit(extent, { duration: 1400, size: map.getSize(), maxZoom: 15 });
-}
+// var val;
+// function ExtentFeatures(e) {
+//     val = this.id;
+//     var feature = searchLayer.getSource().getFeatures()[val];
+//     var extent = feature.getGeometry().getExtent();
+//     map.getView().fit(extent, { duration: 1400, size: map.getSize(), maxZoom: 15 });
+// }
 
 
 //==============================================================================================================================
