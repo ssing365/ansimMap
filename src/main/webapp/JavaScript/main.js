@@ -326,19 +326,19 @@ function newaddGeoJsonToMap(url){
     map.addLayer(queryGeoJSON);
 }
 
-function resultOpen(){
-    var resultOpen = document.getElementById("resultOpen")
-    var searchResultDiv = document.getElementById("searchResultDiv");
-    if(resultOpen.value=="yes"){
-        resultOpen.value="no"
-        resultOpen.innerHTML="펼치기"
-        searchResultDiv.style.display="none";
-    } else if(resultOpen.value=="no"){
-        resultOpen.value="yes"
-        searchResultDiv.style.display="block";
-        resultOpen.innerHTML="접기"
-    }
-}
+// function resultOpen(){
+//     var resultOpen = document.getElementById("resultOpen")
+//     var searchResultDiv = document.getElementById("searchResultDiv");
+//     if(resultOpen.value=="yes"){
+//         resultOpen.value="no"
+//         resultOpen.innerHTML="펼치기"
+//         searchResultDiv.style.display="none";
+//     } else if(resultOpen.value=="no"){
+//         resultOpen.value="yes"
+//         searchResultDiv.style.display="block";
+//         resultOpen.innerHTML="접기"
+//     }
+// }
 
 var whatConv;
 function convX(dd){
@@ -525,7 +525,7 @@ function SwitchPage() {
     var featureSource = new ol.source.Vector();
     var index = (pageNo - 1) * 5;
 
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < 4; i++) {
         if (index == searchList.length) break;
         ShowFeatures(searchList.at(index), i);
 
@@ -601,7 +601,7 @@ function ShowFeatures(feature, i) {
                 return "cspace.png"
             } 
         }
-        for(var v=0; v < 5; v++){
+        for(var v=0; v < 4; v++){
             queryText[v].onclick = function(){
                     map.getView().fit( 
                     clickSelectedFeatureOverlay.getSource().getExtent(),

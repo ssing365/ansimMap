@@ -193,7 +193,6 @@ margin: 10px 10px 10px 185px;
   width: 251px;
   height: 35px;
   color : black;
-  border-bottom : 2px solid midnightblue;
 }
 #resultOpen{
   position:absolute;
@@ -204,6 +203,13 @@ margin: 10px 10px 10px 185px;
   background-color: rgb(190, 182, 182);
   border: 1px solid rgb(190, 182, 182);
   border-radius: 2px;
+}
+#queryText{
+  border : 0.5px solid black;
+  border-collapse: collapse;
+}
+#queryText:hover{
+  background-color : rgb(190, 182, 182);
 }
 
 /* 주변검색 */
