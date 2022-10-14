@@ -99,20 +99,21 @@
             
                     <button type="button" id="attQryRun" class="attQryRun" onclick="searchFeatures()" >검색</button>
                 </div>
-    
+                </div>
                 <div id="resultDiv">
                     <div id="headerDiv">
                         <label for="" id="rotn"></label>
-                        <!-- <button id="resultOpen" onclick="resultOpen()" value="yes">접기</button>-->
+                        <button id="resultOpen" onclick="resultOpen()" value="yes">접기</button>
                     </div>
-                    <div id="searchResultDiv">
-                    </div>
-                    <div id="searchTool">
-                        <input type="number" name="curPage" id="curPage">
-                        <input type="number" name="maxPage" id="maxPage">
+                    <div id="footerDiv">
+                        <div id="searchResultDiv">
+                        </div>
+                        <div id="searchPage">
+                            <input type="number" name="curPage" id="curPage">
+                            <input type="number" name="maxPage" id="maxPage">
+                        </div>
                     </div>
                 </div>
-            </div>
         
             <!--주변검색-->
             <div class="spQueryDiv" id="spQueryDiv">

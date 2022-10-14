@@ -326,19 +326,19 @@ function newaddGeoJsonToMap(url){
     map.addLayer(queryGeoJSON);
 }
 
-// function resultOpen(){
-//     var resultOpen = document.getElementById("resultOpen")
-//     var searchResultDiv = document.getElementById("searchResultDiv");
-//     if(resultOpen.value=="yes"){
-//         resultOpen.value="no"
-//         resultOpen.innerHTML="펼치기"
-//         searchResultDiv.style.display="none";
-//     } else if(resultOpen.value=="no"){
-//         resultOpen.value="yes"
-//         searchResultDiv.style.display="block";
-//         resultOpen.innerHTML="접기"
-//     }
-// }
+function resultOpen(){
+    var resultOpen = document.getElementById("resultOpen")
+    var footerDiv = document.getElementById("footerDiv");
+    if(resultOpen.value=="yes"){
+        resultOpen.value="no"
+        resultOpen.innerHTML="펼치기"
+        footerDiv.style.display="none";
+    } else if(resultOpen.value=="no"){
+        resultOpen.value="yes"
+        footerDiv.style.display="block";
+        resultOpen.innerHTML="접기"
+    }
+}
 
 var whatConv;
 function convX(dd){
@@ -414,10 +414,10 @@ function InitPages(counts) {
     document.getElementById("curPage").value = pageNo;
 
     if (counts == 0) {
-        document.getElementById("searchTool").style.display = "none";
+        document.getElementById("searchPage").style.display = "none";
         return;
     }
-    document.getElementById("searchTool").style.display = "block";
+    document.getElementById("searchPage").style.display = "block";
     maxPageNo = Math.ceil(counts / 5);
     document.getElementById("maxPage").innerHTML = maxPageNo;
     document.getElementById("maxPage").value = maxPageNo;
@@ -525,7 +525,7 @@ function SwitchPage() {
     var featureSource = new ol.source.Vector();
     var index = (pageNo - 1) * 5;
 
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < 5; i++) {
         if (index == searchList.length) break;
         ShowFeatures(searchList.at(index), i);
 
@@ -548,7 +548,7 @@ function SwitchPage() {
 
     map.addLayer(searchLayer);
 }
-
+var footerDiv = document.getElementById("footerDiv");
 //Show search results to HTML layout
 function ShowFeatures(feature, i) {
     //feature.setStyle(iconStyle);
@@ -563,7 +563,7 @@ function ShowFeatures(feature, i) {
     queryText.setAttribute("id", "queryText"); //id = index
     queryText.innerHTML = whichInnerHTML();
     //queryResult.addEventListener("click", ExtentFeatures);
-    searchResultDiv.appendChild(queryResult);
+    footerDiv.appendChild(queryResult);
     queryResult.appendChild(queryText);
 
     function whichInnerHTML(){
@@ -601,7 +601,7 @@ function ShowFeatures(feature, i) {
                 return "cspace.png"
             } 
         }
-        for(var v=0; v < 4; v++){
+        for(var v=0; v < 5; v++){
             queryText[v].onclick = function(){
                     map.getView().fit( 
                     clickSelectedFeatureOverlay.getSource().getExtent(),

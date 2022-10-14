@@ -174,10 +174,15 @@ margin: 10px 10px 10px 185px;
   height: auto;
   max-height: fit-content;
 }
-#searchTool{
-  position: static;
+#searchPage{
+  display: none;
+  position: absolute;
+  bottom: -25px;
+  width : 252px;
+  height : auto;
   background-color: white;
   text-align:center;
+  border : 1px solid black;
 }
 #curPage{
   width:40px;
@@ -191,7 +196,14 @@ margin: 10px 10px 10px 185px;
   display: block;
   background-color: white;
   width: 251px;
-  height: 35px;
+  height: 30px;
+  color : black;
+}
+#footerDiv{
+  display: block;
+  background-color: white;
+  width: 251px;
+  height: auto;
   color : black;
 }
 #resultOpen{
