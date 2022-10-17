@@ -246,7 +246,7 @@ var interactionStyle = new ol.style.Style({
     })
 });
 
-//검색창 버튼
+//MENU - classfication search
 var dbQry = document.getElementById("dbQry");
 var qryFlag = false;
 dbQry.addEventListener("click",()=>{
@@ -278,36 +278,38 @@ dbQry.addEventListener("click",()=>{
     }
 }) 
 
-var s = $('#selectAttribute')
+//Classfication attribute
+var attribute = $('#selectAttribute')
 var value_layer;
 var value_attribute;
 var addsgg;
-var sxsx;
-function setAtt(ta){
-    s.empty();
-    s.append("<option value=\"\" selected>유형 선택</option>")
-    if(ta.value=="conv"){
-        s.append("<option value='convAll'>편의점 전체</option>");
-        s.append("<option value='CU'>CU</option>");
-        s.append("<option value='GS'>GS25</option>");
-        s.append("<option value='세븐일레븐'>세븐일레븐</option>");
-        s.append("<option value='미니스'>미니스톱</option>")
-        s.append("<option value='씨스페이스'>씨스페이스</option>")
+var searchKey;
+function setAtt(facillity){
+    attribute.empty();
+    attribute.append("<option value=\"\" selected>유형 선택</option>")
+    if(facillity.value=="conv"){
+        attribute.append("<option value='convAll'>편의점 전체</option>");
+        attribute.append("<option value='CU'>CU</option>");
+        attribute.append("<option value='GS'>GS25</option>");
+        attribute.append("<option value='세븐일레븐'>세븐일레븐</option>");
+        attribute.append("<option value='미니스'>미니스톱</option>")
+        attribute.append("<option value='씨스페이스'>씨스페이스</option>")
         value_layer='Ansim:conv'
         addsgg='sgg'
         value_attribute='store_name'
-        sxsx='a';
-    } else if(ta.value=="pol"){
-        s.append("<option value='polAll'>경찰서 전체</option>");
-        s.append("<option value='경찰서'>경찰서</option>");
-        s.append("<option value='파출소'>파출소</option>");
-        s.append("<option value='지구대'>지구대</option>");
+        searchKey='a';
+    } else if(facillity.value=="pol"){
+        attribute.append("<option value='polAll'>경찰서 전체</option>");
+        attribute.append("<option value='경찰서'>경찰서</option>");
+        attribute.append("<option value='파출소'>파출소</option>");
+        attribute.append("<option value='지구대'>지구대</option>");
         value_layer='Ansim:pol'
         addsgg='address'
         value_attribute='div'
-        sxsx='b';
+        searchKey='b';
     }
 }
+
 //layering found features
 function newaddGeoJsonToMap(url){
     queryGeoJSON = new ol.layer.Vector({
@@ -326,42 +328,28 @@ function newaddGeoJsonToMap(url){
     map.addLayer(queryGeoJSON);
 }
 
-function resultOpen(){
-    var resultOpen = document.getElementById("resultOpen")
-    var footerDiv = document.getElementById("footerDiv");
-    if(resultOpen.value=="yes"){
-        resultOpen.value="no"
-        resultOpen.innerHTML="펼치기"
-        footerDiv.style.display="none";
-    } else if(resultOpen.value=="no"){
-        resultOpen.value="yes"
-        footerDiv.style.display="block";
-        resultOpen.innerHTML="접기"
-    }
-}
-
 var whatConv;
 function convX(dd){
     whatConv=dd.value;
 }
 
+//select district
 var whatDistrict;
 function districtX(ff){
-    whatDistrict=ff.value;
-    
-    if(whatDistrict=="구"){
+    whatDistrict=ff.value;  
+    if(whatDistrict=="자치구 전체"){ //서울시 전체 레이어
         newaddGeoJsonToMap("http://localhost:8080/geoserver/Ansim/ows?service=WFS&version=1.0.0\
         &request=GetFeature&typeName=" +"admin_sgg"+"\
         &SRSNAME=EPSG:5179&outputFormat=application/json");
-    } else{
+    } else{ //특정 자치구 레이어
         newaddGeoJsonToMap("http://localhost:8080/geoserver/Ansim/ows?service=WFS&version=1.0.0\
         &request=GetFeature&typeName=" +"admin_sgg"+"\
         &SRSNAME=EPSG:5179"+"&CQL_FILTER="+"sgg_nm"+"+"+'Like'+"+'"+whatDistrict+"'\
         &outputFormat=application/json");
     }
-    
 }
 
+//Output change
 function changeLayerName(name){
     switch(name){
         case 'Ansim:conv' :
@@ -373,9 +361,8 @@ function changeLayerName(name){
     }
 }
 
-var searchResultDiv=document.getElementById("searchResultDiv");
-var searchList =[];
 
+/*search*/
 //when no results
 function NoneSearchFeatures(string) {
     var queryResult = document.createElement('div');
@@ -383,7 +370,8 @@ function NoneSearchFeatures(string) {
     searchResultDiv.appendChild(queryResult); //child node
 }
 
-//init expressed search features
+//clear search features
+var searchResultDiv=document.getElementById("searchResultDiv");
 function InitFeatures() {
     //init list layout
     if (searchResultDiv.hasChildNodes) {
@@ -401,12 +389,8 @@ function InitFeatures() {
 
 var pageNo;
 var maxPageNo;
-
 var searchList = []; //search results
 var searchLayer; //search results layer
-
-
-var layer = document.getElementById("selectLayer");
 
 //page nums UI update
 function InitPages(counts) {
@@ -447,7 +431,6 @@ async function searchFeatures(){
     var layer = document.getElementById("selectLayer");
     var attribute = document.getElementById("selectAttribute");
     var district = document.getElementById("selectDistrict");
-    //var txt = document.getElementById("enterValue");
 
     if(layer.options.selectedIndex == 0){
         Swal.fire({
@@ -462,9 +445,6 @@ async function searchFeatures(){
             text : '자치구를 선택해주세요!',
         });
     } else{
-         //layer.options[layer.selectedIndex].value;
-        //attribute.options[attribute.selectedIndex].text;
-        //var value_txt = txt.value;
         var value_txt =  "%25" + whatDistrict +"%25'";
         var value_txt2 = "%25" + whatConv +"%25'";
     
@@ -474,23 +454,16 @@ async function searchFeatures(){
             value_attribute="div"
         }
 
-        var urlDefault ="http://localhost:8080/geoserver/Ansim/ows?service=WFS&version=1.0.0\
+        var urlBase ="http://localhost:8080/geoserver/Ansim/ows?service=WFS&version=1.0.0\
         &request=GetFeature&SRSNAME=EPSG:5179&outputFormat=application/json&typeName="
         if(whatConv=="convAll"){
-            url = urlDefault + value_layer
-            +"&CQL_FILTER="+addsgg
-            +"+"+'Like'+"+'"+value_txt
+            url = urlBase + value_layer+"&CQL_FILTER="+addsgg+"+Like+'"+value_txt
         } else if(whatConv=="polAll"){
-            url = urlDefault + value_layer
-            +"&CQL_FILTER="+addsgg
-            +"+"+'Like'+"+'"+value_txt
+            url = urlBase + value_layer+"&CQL_FILTER="+addsgg+"+Like+'"+value_txt
         } 
         else{
-            url = urlDefault + value_layer
-            +"&CQL_FILTER="+addsgg
-            +"+"+'Like'+"+'"+value_txt
-            +" AND "+value_attribute
-            +"+"+'Like'+"+'"+value_txt2
+            url = urlBase + value_layer+"&CQL_FILTER="+addsgg+"+Like+'"+value_txt
+            +" AND "+value_attribute+"+"+'Like'+"+'"+value_txt2
         }
 
         var resultDiv = document.getElementById("resultDiv");
@@ -567,7 +540,7 @@ function ShowFeatures(feature, i) {
     queryResult.appendChild(queryText);
 
     function whichInnerHTML(){
-        if(sxsx=='a'){
+        if(searchKey=='a'){
             return '&nbsp<img src="' 
             + "resources/images/"
             + convPng() 
@@ -577,7 +550,7 @@ function ShowFeatures(feature, i) {
             +"<span style='font-size: 13px;'>&nbsp <strong>"+ features["store_name"] + "</strong> </span><br>"
             +"<span style='font-size:11px;'>&nbsp&nbsp주소 : </span>"+ "<span style='color: rgb(160, 160, 160); font-size: 11px;'>" + features["address"] + "</span><br>"
             +"<span style='font-size:11px;'>&nbsp&nbsp전화번호 : </span>"+ "<span style='color: rgb(160, 160, 160); font-size: 11px;'>" + features["tel"] + "</span><br>";
-        } else if(sxsx=='b'){
+        } else if(searchKey=='b'){
             return '&nbsp<img src="' 
             + "resources/images/"
             +"pol.png" 
@@ -586,7 +559,6 @@ function ShowFeatures(feature, i) {
             + '" />'
             +"<span style='font-size: 13px;'>&nbsp <strong>"+ features["name"] + "</strong> </span><br>"
             +"<span style='font-size:11px;'>&nbsp&nbsp주소 : </span>"+ "<span style='color: rgb(160, 160, 160); font-size: 11px;'>" + features["address"] + "</span><br>";
-            
         }
         function convPng(){
             if(features["store_name"].includes('CU')){
@@ -611,6 +583,22 @@ function ShowFeatures(feature, i) {
         }
     }
 }
+
+//result fold button
+function resultOpen(){
+    var resultOpen = document.getElementById("resultOpen")
+    var footerDiv = document.getElementById("footerDiv");
+    if(resultOpen.value=="yes"){
+        resultOpen.value="no"
+        resultOpen.innerHTML="펼치기"
+        footerDiv.style.display="none";
+    } else if(resultOpen.value=="no"){
+        resultOpen.value="yes"
+        footerDiv.style.display="block";
+        resultOpen.innerHTML="접기"
+    }
+}
+
 // var val;
 // function ExtentFeatures(e) {
 //     val = this.id;
