@@ -124,15 +124,27 @@ var Chinese = new ol.layer.Tile({
     visible:false
 });
 map.addLayer(Chinese);
-var vWorldSatelliteTile = new ol.layer.Tile({ 
-    title: '위성지도',	
+
+var Satellite = new ol.layer.Tile({
+    title : '위성지도',
     type : 'base',
-    visible : false,
-    source : new ol.source.XYZ({
-        url : "http://api.vworld.kr/req/wmts/1.0.0/C4262EF5-E13C-3526-A10D-E00989DD01AC/Satellite/{z}/{y}/{x}.jpeg",
+    source: new ol.source.WMTS({
+        projection:"EPSG:5179",
+        tileGrid:new ol.tilegrid.WMTS({
+            origin:[-200000.0,4000000.0],
+            matrixIds:["L05","L06","L07","L08","L09","L10","L11","L12","L13","L14","L15","L16","L16","L17","L18"],
+            resolutions:[2088.96, 1044.48, 522.24, 261.12, 130.56, 65.28, 32.64, 16.32, 8.16, 4.08, 2.04, 1.02, 0.51, 0.255],
+
+        }),
+        layer:"satellite_map",
+        format:"image/png",
+        url:"http://map.ngii.go.kr/openapi/Gettile.do?apikey="+baroEkey
     }),
+    visible:false
 });
-map.addLayer(vWorldSatelliteTile);
+map.addLayer(Satellite);
+
+
 
 function backMapBtn(){
     var backMapBtn = document.getElementById("backMapBtn")
@@ -169,7 +181,7 @@ function changeBackMap(tileMap){
     Japanese.setVisible(false);
     Chinese.setVisible(false);
     white_edu.setVisible(false);
-    vWorldSatelliteTile.setVisible(false);
+    Satellite.setVisible(false);
     English.setVisible(false);
     tileMap.setVisible(true);
 }

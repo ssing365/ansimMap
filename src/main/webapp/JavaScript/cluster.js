@@ -13,7 +13,7 @@ var radius = 5 + 20 * 2;
 var convArray = [];
 var convFeature = [];
 $.ajax({
-    url: '../Ansim/resources/conv.geojson',
+    url: './resources/conv.geojson',
     contentType:'application/json',
     dataType:'json',
     success: function(json1) {
@@ -118,7 +118,7 @@ var policeArray = [];
 var policeFeature = [];
 var policeCluster;
 $.ajax({
-    url: '../Ansim/resources/pol.geojson',
+    url: './resources/pol.geojson',
     contentType:'application/json',
     dataType:'json',
     success: function(json2) {

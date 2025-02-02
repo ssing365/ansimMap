@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,49 +9,49 @@
     <title>서울시 안심 지도</title>
     <link rel="stylesheet" href="css/ol.css">
     <link rel="stylesheet" href="css/style.css">
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
     <script src="https://openlayers.org/en/v4.6.5/build/ol.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.4.4/proj4.js"></script>
 </head>
+
 <body>
-    
+
     <div class="grid-container">
 
         <div class="left">
             <button class="menuBtn" id="dbQry" onclick="dbQryBtn()" value="yes">
                 <img src="resources/images/query.png" alt=""
-                style="width:30px;height:30px;filter:brightness(0) invert(1);vertical-align:middle">
+                    style="width:30px;height:30px;filter:brightness(0) invert(1);vertical-align:middle">
                 <br>
                 분류검색
             </button>
             <button class="menuBtn" id="spQry" onclick="spQryBtn()" value="yes">
                 <img src="resources/images/radius.png" alt=""
-                style="width:30px;height:30px;filter:brightness(0) invert(1);vertical-align:middle">
+                    style="width:30px;height:30px;filter:brightness(0) invert(1);vertical-align:middle">
                 <br>
                 주변검색
             </button>
             <button class="menuBtn" id="Ansim" onclick="AnsimBtn()" value="yes">
                 <img src="resources/images/cctv.png" alt=""
-                style="width:30px;height:30px;filter:brightness(0) invert(1);vertical-align:middle">
+                    style="width:30px;height:30px;filter:brightness(0) invert(1);vertical-align:middle">
                 <br>
                 안심시설물
             </button>
             <button class="menuBtn" id="warning" onclick="warningBtn()" value="yes">
                 <img src="resources/images/warning.png" alt=""
-                style="width:30px;height:30px;filter:brightness(0) invert(1);vertical-align:middle">
+                    style="width:30px;height:30px;filter:brightness(0) invert(1);vertical-align:middle">
                 <br>
                 범죄주의구간
             </button>
             <button class="menuBtn" id="level" onclick="levelBtn()" value="yes">
                 <img src="resources/images/graph.png" alt=""
-                style="width:30px;height:30px;filter:brightness(0) invert(1);vertical-align:middle">
+                    style="width:30px;height:30px;filter:brightness(0) invert(1);vertical-align:middle">
                 <br>
                 범죄지수등급
             </button>
         </div>
 
         <div class="right">
-            <div id ="map"> </div>
+            <div id="map"></div>
 
             <!--분류검색-->
             <div class="qryDiv" id="qryDiv">
@@ -61,12 +62,12 @@
                             <option value="conv">안심편의점</option>
                             <option value="pol">경찰서</option>
                         </select>
-                        
+
                         <select name="selectAttribute" id="selectAttribute" onchange="convX(this)" required>
                             <option value="" selected>유형 선택</option>
                         </select>
                     </div>
-    
+
                     <select name="selectDistrict" id="selectDistrict" onchange="districtX(this)" required>
                         <option value="" selected>자치구 선택</option>
                         <option value="자치구 전체">자치구 전체</option>
@@ -96,31 +97,31 @@
                         <option value="중구">중구</option>
                         <option value="중랑구">중랑구</option>
                     </select>
-            
-                    <button type="button" id="attQryRun" class="attQryRun" onclick="searchFeatures()" >검색</button>
+
+                    <button type="button" id="attQryRun" class="attQryRun" onclick="searchFeatures()">검색</button>
                 </div>
+            </div>
+            <div id="resultDiv">
+                <div id="headerDiv">
+                    <label for="" id="rotn"></label>
+                    <button id="resultOpen" onclick="resultOpen()" value="yes">접기</button>
                 </div>
-                <div id="resultDiv">
-                    <div id="headerDiv">
-                        <label for="" id="rotn"></label>
-                        <button id="resultOpen" onclick="resultOpen()" value="yes">접기</button>
+                <div id="footerDiv">
+                    <div id="searchResultDiv">
                     </div>
-                    <div id="footerDiv">
-                        <div id="searchResultDiv">
-                        </div>
-                        <div id="searchPage">
-                            <input type="number" name="curPage" id="curPage">
-                            <input type="number" name="maxPage" id="maxPage">
-                        </div>
+                    <div id="searchPage">
+                        <input type="number" name="curPage" id="curPage">
+                        <input type="number" name="maxPage" id="maxPage">
                     </div>
                 </div>
-        
+            </div>
+
             <!--주변검색-->
             <div class="spQueryDiv" id="spQueryDiv">
-                
+
                 <select name="buffSelectLayer" id="buffSelectLayer" required>
                 </select>
-        
+
                 <div class="bufferDiv" id="bufferDiv">
                     <input type="number" name="bufferDistance" id="bufferDistance" placeholder="거리 입력">
                     <select name="distanceUnits" id="distanceUnits">
@@ -128,31 +129,33 @@
                         <option value="kilometers">KM(킬로미터)</option>
                     </select>
                 </div>
-        
+
                 <select name="srcCriteria" id="srcCriteria" required>
                     <option value="" selected>그리기 형식</option>
                     <option value="pointMarker">포인트</option>
                     <option value="lineMarker">라인</option>
                 </select>
-        
+
                 <button type="button" id="spUserInput" class="spUserInput"><img src="resources/images/pen.png" alt=""
-                        style="width:17px;height:17px;vertical-align:middle"></img></button>        
+                        style="width:17px;height:17px;vertical-align:middle"></img></button>
                 <button type="button" id="spQryClear" class="spQryClear">지우기</button>
                 <button type="button" id="spQryRun" class="spQryRun">검색</button>
             </div>
-            
+
             <!--검색 결과 테이블-->
             <div class="attListDiv" id="attListDiv"></div>
 
             <!--안심레이어선택창-->
             <div id="AnsimLayer">
-                <button class="layerBtn" id="convBtn" title="convenience Layer" onclick="addConv(); styleConv();" value="yes">
-                    <img src="resources/images/store.png" alt=""
-                        style="width:27px;height:27px;vertical-align:middle" class="layerImg" id="convImg"></img>
+                <button class="layerBtn" id="convBtn" title="convenience Layer" onclick="addConv(); styleConv();"
+                    value="yes">
+                    <img src="resources/images/store.png" alt="" style="width:27px;height:27px;vertical-align:middle"
+                        class="layerImg" id="convImg"></img>
                     <br>
                     <span class="layerText" id="convText">안심지킴이집</span>
                 </button>
-                <button class="layerBtn" id="policeBtn" title="police Layer" onclick="addPolice(); stylePolice();" value="yes">
+                <button class="layerBtn" id="policeBtn" title="police Layer" onclick="addPolice(); stylePolice();"
+                    value="yes">
                     <img src="resources/images/police-hat.png" alt=""
                         style="width:27px;height:27px;vertical-align:middle" class="layerImg" id="policeImg"></img>
                     <br>
@@ -164,40 +167,42 @@
             <div id="warningLegendDiv">
                 <div>
                     <button id="warningLegendOpen" onclick="warningLegendOpen()" value="yes">
-                        &nbsp;&nbsp;범례 닫기&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▲
+                        &nbsp;&nbsp;범례
+                        닫기&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▲
                     </button>
                 </div>
-                <div class="warningLegend" id="warningLegendContainer" >
+                <div class="warningLegend" id="warningLegendContainer">
                     <img id="warningLegend" src="resources/images/warningInfo.png" alt="">
                 </div>
             </div>
-        
+
             <!-- 범죄지수등급선택창 -->
             <div id="levelLayer">
                 <button class="levelBtn" id="levelAll" onclick="level(0)" value="yes">
-                전체 선택
+                    전체 선택
                 </button>
-                <button class="levelBtn" id="level5" onclick="level(5)" >
-                5등급
+                <button class="levelBtn" id="level5" onclick="level(5)">
+                    5등급
                 </button>
-                <button class="levelBtn" id="level4" onclick="level(4)" >
-                4등급
+                <button class="levelBtn" id="level4" onclick="level(4)">
+                    4등급
                 </button>
-                <button class="levelBtn" id="level3" onclick="level(3)" >
-                3등급
+                <button class="levelBtn" id="level3" onclick="level(3)">
+                    3등급
                 </button>
-                <button class="levelBtn"  id="level2" onclick="level(2)" >
-                2등급
+                <button class="levelBtn" id="level2" onclick="level(2)">
+                    2등급
                 </button>
-                <button class="levelBtn"  id="level1" onclick="level(1)" >
-                1등급
+                <button class="levelBtn" id="level1" onclick="level(1)">
+                    1등급
                 </button>
             </div>
             <!--범죄지수등급 범례-->
             <div id="levelLegendDiv">
                 <div>
                     <button id="levelLegendOpen" onclick="levelLegendOpen()" value="yes">
-                        &nbsp;&nbsp;범례 닫기&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▲
+                        &nbsp;&nbsp;범례
+                        닫기&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▲
                     </button>
                 </div>
                 <div class="levelLegend" id="levelLegendContainer">
@@ -206,23 +211,23 @@
             </div>
 
             <!--배경지도버튼-->
-            <button id="backMapBtn" onclick="backMapBtn()" value="yes"> 
+            <button id="backMapBtn" onclick="backMapBtn()" value="yes">
                 <img src="resources/images/geography.png" alt=""
-                style="width:27px;height:27px;filter:brightness(0) invert(1);vertical-align:middle"><br> 
+                    style="width:27px;height:27px;filter:brightness(0) invert(1);vertical-align:middle"><br>
                 배경지도
             </button>
-        
+
             <!--배경지도선택창-->
             <div id="backMapList" style="display:none;">
                 <div id="center">
-                <button class="backMapListBtn" onclick="changeBackMap(Korean)">일반지도</button>
-                <button class="backMapListBtn" onclick="changeBackMap(vWorldSatelliteTile)">위성지도</button>
-                <button class="backMapListBtn" onclick="changeBackMap(color)">색각지도</button>
-                <button class="backMapListBtn" onclick="changeBackMap(white_edu)">교육용백지도</button>
-                <button class="backMapListBtn" onclick="changeBackMap(English)">English</button>
-                <button class="backMapListBtn" onclick="changeBackMap(Chinese)">Chinese</button>
-                <button class="backMapListBtn" onclick="changeBackMap(Japanese)">Japanese</button>
-                </div>  
+                    <button class="backMapListBtn" onclick="changeBackMap(Korean)">일반지도</button>
+                    <button class="backMapListBtn" onclick="changeBackMap(Satellite)">위성지도</button>
+                    <button class="backMapListBtn" onclick="changeBackMap(color)">색각지도</button>
+                    <button class="backMapListBtn" onclick="changeBackMap(white_edu)">교육용백지도</button>
+                    <button class="backMapListBtn" onclick="changeBackMap(English)">English</button>
+                    <button class="backMapListBtn" onclick="changeBackMap(Chinese)">Chinese</button>
+                    <button class="backMapListBtn" onclick="changeBackMap(Japanese)">Japanese</button>
+                </div>
             </div>
 
             <!--현위치-->
@@ -234,16 +239,14 @@
 
             <!-- 거리측정 -->
             <button id="measureLength">
-                <img src="resources/images/ruler.png" alt=""
-                    style="width:17px;height:17px;vertical-align:middle">
+                <img src="resources/images/ruler.png" alt="" style="width:17px;height:17px;vertical-align:middle">
                 <br>
                 거리
             </button>
 
             <!-- 면적측정 -->
             <button id="measureExtent">
-                <img src="resources/images/extent.png" alt=""
-                    style="width:17px;height:17px;vertical-align:middle">
+                <img src="resources/images/extent.png" alt="" style="width:17px;height:17px;vertical-align:middle">
                 <br>
                 면적
             </button>
@@ -255,9 +258,9 @@
             </div> -->
         </div>
     </div>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-    <script src="sweetalert2.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="JavaScript/ol.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="JavaScript/backMap.js"></script>
@@ -267,4 +270,5 @@
     <script src="JavaScript/cluster.js"></script>
     <script src="JavaScript/main.js"></script>
 </body>
+
 </html>
